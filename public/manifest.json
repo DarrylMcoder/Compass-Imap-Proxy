@@ -8,22 +8,22 @@
   "theme_color": "#3367D6",
    "icons": [
         {
-            "src": "/yt-splash.png",
+            "src": "images/yt-splash.png",
             "sizes": "192x",
             "type": "image/png"
         },
         {
-            "src": "/yt-splash.png",
+            "src": "images/yt-splash.png",
             "sizes": "256x",
             "type": "image/png"
         },
         {
-            "src": "/yt-splash.png",
+            "src": "images/yt-splash.png",
             "sizes": "384x",
             "type": "image/png"
         },
         {
-            "src": "/yt-splash.png",
+            "src": "images/yt-splash.png",
             "sizes": "512x",
             "type": "image/png"
         }
