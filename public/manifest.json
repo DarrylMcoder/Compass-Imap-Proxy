@@ -1,10 +1,10 @@
 {
   "short_name": "YouTube",
   "name": "YouTube",
-  "start_url": "/proxy/https://youtube.com/",
+  "start_url": "/proxy/https://m.youtube.com/",
   "background_color": "#3367D6",
   "display": "standalone",
   "orientation": "portrait",
-  "scope": "/proxy/https://youtube.com/",
+  "scope": "/proxy /",
   "theme_color": "#3367D6"
 }
