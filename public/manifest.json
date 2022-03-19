@@ -3,8 +3,7 @@
   "name": "YouTube",
   "start_url": "/proxy/https://m.youtube.com/",
   "background_color": "#3367D6",
-  "display": "standalone",
-  "orientation": "portrait",
+  "display": "fullscreen",
   "scope": "/proxy /",
   "theme_color": "#3367D6"
 }
