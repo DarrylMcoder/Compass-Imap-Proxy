@@ -1,6 +1,7 @@
 var express = require("express"),
     unblocker = require("unblocker"),
     serveStatic = require('serve-static'),
+    origin = require("./origin.js"),
     port = process.env.PORT || 80,
     app = express();
 ///*
@@ -8,7 +9,7 @@ var express = require("express"),
 app.use(
   unblocker({
     requestMiddleware: [
-      
+      origin()
     ],
     responseMiddleware: [
      
