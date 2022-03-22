@@ -9,7 +9,7 @@ var express = require("express"),
 ///*
 
 app.use((req,res,next) => {
-  var sql = 'SELECT * FROM whitelist WHERE ip = ' + req.headers['x-forwarded-for'];
+  var sql = 'SELECT * FROM whitelist WHERE ip = \'' + req.headers['x-forwarded-for'] + '\'';
   mysql.query(sql, (err, result, fields) => {
     if (err) throw err;
     if(result[0]) {
