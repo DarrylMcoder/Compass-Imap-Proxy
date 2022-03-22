@@ -15,6 +15,11 @@ app.get('/create', (req, res, next) => {
   var sql = "CREATE TABLE whitelist(id INT AUTO_INCREMENT PRIMARY KEY, ip VARCHAR(255) UNIQUE, created_at BIGINT, expires BIGINT)";
   mysql.query(sql, (err) => console.log(err));
 });
+
+app.get('/delete', (req, res, next) => {
+  var sql = 'DROP TABLE whitelist';
+  mysql.query(sql, (err) => console.log(err));
+});
 //*/
 
 app.post('/add/ip', (req, res, next) => {
@@ -22,12 +27,18 @@ app.post('/add/ip', (req, res, next) => {
       ip = req.body.ip,
       dollars = req.body.dollars;
   if(password != process.env.PASSWORD) {
-    res.send('Wrong password', 403);
+    res.status(403).send('Wrong password');
+    return;
   }
   var timestamp = Math.floor(new Date().getTime() / 1000),
       paidtime = dollars / 2 * 30 * 24 * 60 * 60,
       expires = timestamp + paidtime,
       sql = "INSERT INTO whitelist(ip, created_at, expires) VALUES('" + ip + "', " + timestamp + ", " + expires + ")";
+  if(ip && timestamp && expires){
+
+  }else{
+    res.status(400).send('Empty fields');
+  }
   mysql.query(sql,(err) => {
     if(err) throw err;
     res.send('IP added to whitelist');
@@ -48,7 +59,7 @@ app.use('/proxy', (req,res,next) => {
         fs.readFile('blocked.html', (err, data) => {
           if(err) throw err;
           res.setHeader('Content-type', 'text/html');
-          res.send(data);
+          res.send(date.getHours() + " \n " + date.getMinutes() + data);
         });
       }
     }
