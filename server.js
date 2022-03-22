@@ -7,11 +7,12 @@ var express = require("express"),
     port = process.env.PORT || 80,
     app = express();
 ///*
-
+/*/
 app.get('/create', (req, res, next) => {
   var sql = "CREATE TABLE whitelist(id INT AUTO_INCREMENT PRIMARY KEY, ip VARCHAR(255) UNIQUE, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
   mysql.query(sql, (err) => console.log(err));
 });
+//*/
 
 app.use((req,res,next) => {
   var sql = 'SELECT * FROM whitelist WHERE ip = \'' + req.headers['x-forwarded-for'] + '\'';
