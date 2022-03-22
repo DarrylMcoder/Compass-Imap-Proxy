@@ -53,7 +53,7 @@ app.use('/proxy', (req,res,next) => {
       next();
     }else{
       var date = new Date();
-      if(date.getHours() === 12 && date.getMinutes() <= 30) {
+      if(/*date.getHours() === 16 &&*/ date.getMinutes() <= 30) {
         next();
       }else{
         fs.readFile('blocked.html', (err, data) => {
