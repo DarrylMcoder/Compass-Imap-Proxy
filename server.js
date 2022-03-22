@@ -26,7 +26,8 @@ app.post('/add/ip', (req, res, next) => {
   var password = req.body.password,
       ip = req.body.ip,
       dollars = req.body.dollars;
-  if(password != process.env.PASSWORD) {
+  if(password === process.env.PASSWORD) {
+  }else{
     res.status(403).send('Wrong password \n ' + process.env.PASSWORD);
     return;
   }
