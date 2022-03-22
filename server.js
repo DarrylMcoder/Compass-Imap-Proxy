@@ -7,12 +7,32 @@ var express = require("express"),
     port = process.env.PORT || 80,
     app = express();
 ///*
-/*/
+
+app.use(express.json());
+
+//
 app.get('/create', (req, res, next) => {
-  var sql = "CREATE TABLE whitelist(id INT AUTO_INCREMENT PRIMARY KEY, ip VARCHAR(255) UNIQUE, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
+  var sql = "CREATE TABLE whitelist(id INT AUTO_INCREMENT PRIMARY KEY, ip VARCHAR(255) UNIQUE, created_at BIGINT, expires BIGINT)";
   mysql.query(sql, (err) => console.log(err));
 });
 //*/
+
+app.post('/add/ip', (req, res, next) => {
+  var password = req.body.password,
+      ip = req.body.ip,
+      dollars = req.body.dollars;
+  if(password != process.env.PASSWORD) {
+    res.send('Wrong password', 403);
+  }
+  var timestamp = Math.floor(new Date().getTime() / 1000),
+      paidtime = dollars / 2 * 30 * 24 * 60 * 60,
+      expires = timestamp + paidtime,
+      sql = "INSERT INTO whitelist(ip, created_at, expires) VALUES('" + ip + "', " + timestamp + ", " + expires + ")";
+  mysql.query(sql,(err) => {
+    if(err) throw err;
+    res.send('IP added to whitelist');
+  });
+});
 
 app.use((req,res,next) => {
   var sql = 'SELECT * FROM whitelist WHERE ip = \'' + req.headers['x-forwarded-for'] + '\'';
