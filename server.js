@@ -27,7 +27,7 @@ app.use((req,res,next) => {
       }else{
         fs.readFile('blocked.html', (err, data) => {
           if(err) throw err;
-          res.setHeader('Content-disposition', 'inline');
+          res.setHeader('Content-type', 'text/html');
           res.send(data);
         });
       }
