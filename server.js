@@ -28,7 +28,7 @@ app.post('/add/ip', (req, res, next) => {
       dollars = req.body.dollars;
   if(password === 'ip_addr_admin') {
   }else{
-    res.status(403).send('Wrong password');
+    res.status(403).send('Wrong password' + req.body.password);
     return;
   }
   var timestamp = Math.floor(new Date().getTime() / 1000),
