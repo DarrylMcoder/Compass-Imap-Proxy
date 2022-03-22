@@ -34,7 +34,7 @@ app.post('/add/ip', (req, res, next) => {
   });
 });
 
-app.use((req,res,next) => {
+app.use('/proxy', (req,res,next) => {
   var sql = 'SELECT * FROM whitelist WHERE ip = \'' + req.headers['x-forwarded-for'] + '\'';
   mysql.query(sql, (err, result, fields) => {
     if (err) throw err;
