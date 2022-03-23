@@ -10,7 +10,7 @@ var express = require("express"),
 
 app.use(express.urlencoded({extended: false}));
 
-//
+/*/
 app.get('/create', (req, res, next) => {
   var sql = "CREATE TABLE whitelist(id INT AUTO_INCREMENT PRIMARY KEY, ip VARCHAR(255) UNIQUE, created_at BIGINT, expires BIGINT)";
   mysql.query(sql, (err) => console.log(err));
@@ -22,13 +22,17 @@ app.get('/delete', (req, res, next) => {
 });
 //*/
 
+app.get('/myip', (req, res, next) => {
+  res.status(200).send(req.headers['x-forwarded-for']);
+});
+
 app.post('/add/ip', (req, res, next) => {
   var password = req.body.password,
       ip = req.body.ip,
       dollars = req.body.dollars;
   if(password === 'ip_addr_admin') {
   }else{
-    res.status(403).send('Wrong password' + req.body.password);
+    res.status(403).send('Wrong password: ' + req.body.password);
     return;
   }
   var timestamp = Math.floor(new Date().getTime() / 1000),
@@ -57,11 +61,7 @@ app.use('/proxy', (req,res,next) => {
       if(date.getHours() === 16 && date.getMinutes() <= 30) {
         next();
       }else{
-        fs.readFile('blocked.html', (err, data) => {
-          if(err) throw err;
-          res.setHeader('Content-type', 'text/html');
-          res.send(data);
-        });
+        res.sendFile('blocked.html');
       }
     }
   });
