@@ -61,7 +61,9 @@ app.use('/proxy', (req,res,next) => {
       if(date.getHours() === 16 && date.getMinutes() <= 30) {
         next();
       }else{
-        res.sendFile('/blocked.html');
+        res.sendFile('/blocked.html', {
+          root: __dirname
+        });
       }
     }
   });
