@@ -8,7 +8,7 @@ var express = require("express"),
     app = express();
 ///*
 
-app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
 //
 app.get('/create', (req, res, next) => {
