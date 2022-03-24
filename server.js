@@ -30,7 +30,7 @@ app.get('/myip', (req, res, next) => {
   res.status(200).send(req.headers['x-forwarded-for']);
 });
 
-app.get('/activate', (req, res, next) => {
+app.post('/activate', (req, res, next) => {
   var id = req.body.proxyuserid;
   res.cookie('proxyuserid', id, {
     maxAge: 60*60*24*365,
