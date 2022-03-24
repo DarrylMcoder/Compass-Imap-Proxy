@@ -2,6 +2,7 @@ var express = require("express"),
     unblocker = require("unblocker"),
     serveStatic = require('serve-static'),
     fs = require('fs'),
+    cookieParser = require('cookie-parser'),
     origin = require("./origin.js"),
     mysql = require('./mysql.js'),
     port = process.env.PORT || 80,
@@ -9,6 +10,7 @@ var express = require("express"),
 ///*
 
 app.use(express.urlencoded({extended: false}));
+app.use(cookieParser());
 
 /*/
 app.get('/create', (req, res, next) => {
@@ -26,32 +28,32 @@ app.get('/myip', (req, res, next) => {
   res.status(200).send(req.headers['x-forwarded-for']);
 });
 
-app.post('/add/ip', (req, res, next) => {
+app.get('/activate', (req, res, next) => {
+  var id = req.body.proxyuserid;
+  res.cookie('proxyuserid', id, {
+    maxAge: 60*60*24*365,
+    httpOnly: true
+  });
+});
+
+app.post('/add/id', (req, res, next) => {
   var password = req.body.password,
-      ip = req.body.ip,
+      id = Math.random(),
       dollars = req.body.dollars;
-  if(password === 'ip_addr_admin') {
+  if(password === process.env.PASSWORD) {
   }else{
     res.status(403).send('Wrong password: ' + req.body.password);
     return;
   }
   var timestamp = Math.floor(new Date().getTime() / 1000),
       paidtime = dollars / 2 * 30 * 24 * 60 * 60,
-      expires = timestamp + paidtime,
-      sql = "INSERT INTO whitelist(ip, created_at, expires) VALUES('" + ip + "', " + timestamp + ", " + expires + ")";
-  if(ip && timestamp && expires){
-
-  }else{
-    res.status(400).send('Empty fields');
-  }
-  mysql.query(sql,(err) => {
-    if(err) throw err;
-    res.send('IP added to whitelist');
-  });
+      expires = timestamp + paidtime;
+  insertID(id, timestamp, expires, req, res);
 });
 
 app.use('/proxy', (req,res,next) => {
-  var sql = 'SELECT * FROM whitelist WHERE ip = \'' + req.headers['x-forwarded-for'] + '\'';
+  var id = req.cookies.proxyuserid,
+      sql = 'SELECT * FROM whitelist WHERE id = \'' + id + '\'';
   mysql.query(sql, (err, result, fields) => {
     if (err) throw err;
     if(result[0]) {
@@ -90,3 +92,22 @@ app.use("/",serveStatic("public", {
 app.listen(port);
 
 console.log("app listening on port "+ port);
+
+function insertID(id, timestamp, expires, req, res) {
+  var sql = "INSERT INTO whitelist(id, created_at, expires) VALUES('" + id + "', " + timestamp + ", " + expires + ")";
+  if(id && timestamp && expires){
+
+  }else{
+    res.status(400).send('Empty fields');
+  }
+  mysql.query(sql,(err) => {
+    if(err){
+      if(err.errno ==1062){
+        insertID(Math.random(), timestamp, expires, req, res);
+      }else{
+        throw err;
+      }
+    }
+    res.send('<h2> ID added to whitelist:<br>' + id + '</h2>');
+  });
+}
