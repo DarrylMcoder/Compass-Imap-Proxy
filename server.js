@@ -16,11 +16,13 @@ app.use(cookieParser());
 app.get('/create', (req, res, next) => {
   var sql = "CREATE TABLE whitelist(id INT AUTO_INCREMENT PRIMARY KEY, id VARCHAR(255) UNIQUE, created_at BIGINT, expires BIGINT)";
   mysql.query(sql, (err) => console.log(err));
+  res.send('done');
 });
 
 app.get('/delete', (req, res, next) => {
   var sql = 'DROP TABLE whitelist';
   mysql.query(sql, (err) => console.log(err));
+  res.send('done');
 });
 //*/
 
