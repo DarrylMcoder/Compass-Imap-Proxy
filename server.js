@@ -36,6 +36,7 @@ app.get('/activate', (req, res, next) => {
     maxAge: 60*60*24*365,
     httpOnly: true
   });
+  res.redirect(req.headers['referer'] || '/');
 });
 
 app.post('/add/id', (req, res, next) => {
