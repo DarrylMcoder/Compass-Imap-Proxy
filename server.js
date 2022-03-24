@@ -12,9 +12,9 @@ var express = require("express"),
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
-/*/
+//
 app.get('/create', (req, res, next) => {
-  var sql = "CREATE TABLE whitelist(id INT AUTO_INCREMENT PRIMARY KEY, ip VARCHAR(255) UNIQUE, created_at BIGINT, expires BIGINT)";
+  var sql = "CREATE TABLE whitelist(id INT AUTO_INCREMENT PRIMARY KEY, id VARCHAR(255) UNIQUE, created_at BIGINT, expires BIGINT)";
   mysql.query(sql, (err) => console.log(err));
 });
 
