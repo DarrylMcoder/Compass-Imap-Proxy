@@ -14,7 +14,7 @@ app.use(cookieParser());
 
 //
 app.get('/create', (req, res, next) => {
-  var sql = "CREATE TABLE whitelist(id INT AUTO_INCREMENT PRIMARY KEY, id VARCHAR(255) UNIQUE, created_at BIGINT, expires BIGINT)";
+  var sql = "CREATE TABLE whitelist(id INT AUTO_INCREMENT PRIMARY KEY, proxyuserid VARCHAR(255) UNIQUE, created_at BIGINT, expires BIGINT)";
   mysql.query(sql, (err) => console.log(err));
   res.send('done');
 });
@@ -55,7 +55,7 @@ app.post('/add/id', (req, res, next) => {
 
 app.use('/proxy', (req,res,next) => {
   var id = req.cookies.proxyuserid,
-      sql = 'SELECT * FROM whitelist WHERE id = \'' + id + '\'';
+      sql = 'SELECT * FROM whitelist WHERE proxyuserid = \'' + id + '\'';
   mysql.query(sql, (err, result, fields) => {
     if (err) throw err;
     if(result[0]) {
@@ -96,7 +96,7 @@ app.listen(port);
 console.log("app listening on port "+ port);
 
 function insertID(id, timestamp, expires, req, res) {
-  var sql = "INSERT INTO whitelist(id, created_at, expires) VALUES('" + id + "', " + timestamp + ", " + expires + ")";
+  var sql = "INSERT INTO whitelist(proxyuserid, created_at, expires) VALUES('" + id + "', " + timestamp + ", " + expires + ")";
   if(id && timestamp && expires){
 
   }else{
