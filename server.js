@@ -3,6 +3,7 @@ var express = require("express"),
     serveStatic = require('serve-static'),
     fs = require('fs'),
     cookieParser = require('cookie-parser'),
+    w2v = require('word2vec'),
     origin = require("./origin.js"),
     mysql = require('./mysql.js'),
     port = process.env.PORT || 80,
@@ -12,7 +13,7 @@ var express = require("express"),
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
-//
+/*/
 app.get('/create', (req, res, next) => {
   var sql = "CREATE TABLE whitelist(id INT AUTO_INCREMENT PRIMARY KEY, proxyuserid VARCHAR(255) UNIQUE, created_at BIGINT, expires BIGINT)";
   mysql.query(sql, (err) => console.log(err));
@@ -53,7 +54,7 @@ app.post('/add/id', (req, res, next) => {
       expires = timestamp + paidtime;
   insertID(id, timestamp, expires, req, res);
 });
-
+/*/
 app.use('/proxy', (req,res,next) => {
   var id = req.cookies.proxyuserid,
       sql = 'SELECT * FROM whitelist WHERE proxyuserid = \'' + id + '\'';
@@ -73,6 +74,8 @@ app.use('/proxy', (req,res,next) => {
     }
   });
 });
+//*/
+
 
 app.use(
   unblocker({
