@@ -54,7 +54,7 @@ app.post('/add/id', (req, res, next) => {
       expires = timestamp + paidtime;
   insertID(id, timestamp, expires, req, res);
 });
-/*/
+//
 app.use('/proxy', (req,res,next) => {
   var id = req.cookies.proxyuserid,
       sql = 'SELECT * FROM whitelist WHERE proxyuserid = \'' + id + '\'';
